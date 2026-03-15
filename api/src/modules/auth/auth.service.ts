@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { UsersService } from '../users/users.service'; // Assumindo que criaste este serviço
+import { UsersService } from '../users/users.service';
 import { LoginDto } from './dto/login.dto';
 
 @Injectable()
@@ -12,14 +12,12 @@ export class AuthService {
   ) {}
 
   async login(loginDto: LoginDto) {
-    // 1. Procurar o utilizador pelo email
     const user = await this.usersService.findByEmail(loginDto.email);
     
     if (!user) {
       throw new UnauthorizedException('Credenciais inválidas.');
     }
 
-    // 2. Verificar se a palavra-passe está correta
     const isPasswordValid = await bcrypt.compare(loginDto.password, user.passwordHash);
     
     if (!isPasswordValid) {

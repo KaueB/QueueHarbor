@@ -12,9 +12,11 @@ import {
   Check,
   CheckCircle,
   ChevronUp,
+  Database,
   LayoutDashboard as Dashboard, Eye, EyeOff,
   Inbox,
   Languages,
+  List,
   Loader2,
   Lock,
   LogIn,
@@ -23,8 +25,11 @@ import {
   Mail,
   Monitor,
   Moon,
+  Plus,
   Palette,
   Server, Sun,
+  Settings,
+  Trash2,
   X
 } from 'lucide-angular';
 
@@ -44,7 +49,8 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(LucideAngularModule.pick({ 
       Box, Server, Sun, Moon, Monitor, Check, X, Palette, Languages, 
       LogOut, ChevronUp, CheckCircle, Inbox, Dashboard, Eye, EyeOff, 
-      Loader2, Mail, Lock, AlertCircle, LogIn 
+      Loader2, Mail, Lock, AlertCircle, LogIn, Database, Plus, Trash2,
+      List, Settings
     })),
   ],
 };

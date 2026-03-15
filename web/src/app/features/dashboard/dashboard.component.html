@@ -16,25 +16,25 @@
   <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-10">
     <app-stat-card
       title="Total de Jobs"
-      value="2,450"
+      [value]="stats().totalJobs"
       icon="box"
       description="+12% desde ontem"
     ></app-stat-card>
     <app-stat-card
       title="Ativos agora"
-      value="16"
+      [value]="stats().activeNow"
       icon="server"
       description="Processamento normal"
     ></app-stat-card>
     <app-stat-card
       title="Concluídos (24h)"
-      value="1,280"
+      [value]="stats().completed24h"
       icon="check-circle"
       description="Taxa de sucesso: 98%"
     ></app-stat-card>
     <app-stat-card
       title="Sistemas em Erro"
-      value="2"
+      [value]="stats().errorSystems"
       icon="alert-circle"
       description="Requer atenção imediata"
     ></app-stat-card>
@@ -50,7 +50,7 @@
     </div>
 
     @defer (on idle) {
-      <app-queue-table [queues]="mockQueues"></app-queue-table>
+      <app-queue-table [queues]="mockQueues()"></app-queue-table>
     } 
     @placeholder (minimum 800ms) {
       <div class="w-full bg-card border border-border rounded-2xl overflow-hidden p-8 animate-pulse">

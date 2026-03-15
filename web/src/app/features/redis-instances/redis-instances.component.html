@@ -1,0 +1,116 @@
+<div class="space-y-8 pb-8">
+  <div class="flex items-center justify-between mb-8">
+    <div>
+      <h1 class="text-3xl font-bold tracking-tight text-foreground">Instâncias Redis</h1>
+      <p class="text-muted-foreground mt-1">Gerencie as conexões físicas do seu ecossistema de filas.</p>
+    </div>
+    <div class="flex items-center gap-3">
+      <button 
+        (click)="toggleForm()"
+        class="inline-flex items-center justify-center rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm hover:bg-primary/90 transition-all hover:scale-[1.02] active:scale-[0.98] gap-2"
+      >
+        <lucide-icon [name]="showForm() ? 'x' : 'plus'" class="w-4 h-4"></lucide-icon>
+        {{ showForm() ? 'Cancelar' : 'Nova Instância' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Form Section -->
+  <div *ngIf="showForm()" class="bg-card border border-border rounded-2xl p-6 shadow-sm animate-in fade-in slide-in-from-top-4 duration-300">
+    <form [formGroup]="instanceForm" (ngSubmit)="onSubmit()" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-end">
+      <div class="space-y-2">
+        <label class="text-sm font-semibold text-foreground/80 ml-1">NOME / SLUG</label>
+        <input 
+          formControlName="name"
+          placeholder="ex: prod-redis"
+          class="flex h-11 w-full rounded-xl border border-input bg-background px-4 py-2 text-sm outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all"
+        />
+      </div>
+      <div class="space-y-2">
+        <label class="text-sm font-semibold text-foreground/80 ml-1">HOST</label>
+        <input 
+          formControlName="host"
+          placeholder="localhost"
+          class="flex h-11 w-full rounded-xl border border-input bg-background px-4 py-2 text-sm outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all"
+        />
+      </div>
+      <div class="space-y-2">
+        <label class="text-sm font-semibold text-foreground/80 ml-1">PORTA</label>
+        <input 
+          type="number"
+          formControlName="port"
+          class="flex h-11 w-full rounded-xl border border-input bg-background px-4 py-2 text-sm outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all"
+        />
+      </div>
+      <div>
+        <button 
+          type="submit"
+          [disabled]="instanceForm.invalid || isSubmitting()"
+          class="w-full h-11 inline-flex items-center justify-center rounded-xl bg-primary px-4 font-semibold text-primary-foreground shadow-sm hover:bg-primary/90 disabled:opacity-50 transition-all gap-2"
+        >
+          <lucide-icon *ngIf="isSubmitting()" name="loader-2" class="w-4 h-4 animate-spin"></lucide-icon>
+          {{ isSubmitting() ? 'Salvando...' : 'Salvar Instância' }}
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Instances Table -->
+  <div class="bg-card border border-border rounded-2xl overflow-hidden shadow-sm">
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="border-b border-border bg-muted/30">
+            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-muted-foreground">Instância</th>
+            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-muted-foreground">Endereço</th>
+            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-muted-foreground">Criado em</th>
+            <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-muted-foreground text-right">Ações</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-border">
+          <tr *ngFor="let instance of instances()" class="hover:bg-muted/20 transition-colors group">
+            <td class="px-6 py-4">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary border border-primary/20">
+                  <lucide-icon name="database" class="w-5 h-5"></lucide-icon>
+                </div>
+                <span class="font-bold text-foreground">{{ instance.name }}</span>
+              </div>
+            </td>
+            <td class="px-6 py-4">
+              <div class="flex items-center gap-2 text-sm text-muted-foreground font-medium">
+                <code>{{ instance.host }}:{{ instance.port }}</code>
+              </div>
+            </td>
+            <td class="px-6 py-4 text-sm text-muted-foreground">
+              {{ instance.createdAt | date:'dd/MM/yyyy HH:mm' }}
+            </td>
+            <td class="px-6 py-4 text-right">
+              <button 
+                (click)="removeInstance(instance.id)"
+                class="opacity-0 group-hover:opacity-100 p-2 text-destructive/60 hover:text-destructive hover:bg-destructive/10 rounded-lg transition-all"
+                title="Remover"
+              >
+                <lucide-icon name="trash-2" class="w-5 h-5"></lucide-icon>
+              </button>
+            </td>
+          </tr>
+
+          <!-- Empty State -->
+          <tr *ngIf="instances().length === 0 && !isLoading()">
+            <td colspan="4" class="px-6 py-12 text-center text-muted-foreground">
+              Nenhuma instância configurada.
+            </td>
+          </tr>
+          
+          <!-- Loading State -->
+          <tr *ngIf="isLoading()">
+            <td colspan="4" class="px-6 py-12 text-center">
+              <lucide-icon name="loader-2" class="w-6 h-6 animate-spin mx-auto text-primary"></lucide-icon>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

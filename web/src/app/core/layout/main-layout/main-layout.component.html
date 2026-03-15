@@ -12,7 +12,25 @@
       <a routerLink="/dashboard" routerLinkActive="bg-primary/10 text-primary font-medium" [routerLinkActiveOptions]="{exact: true}"
         class="flex items-center px-3 py-2.5 text-sm rounded-lg text-muted-foreground hover:bg-primary/5 hover:text-foreground transition-all group">
         <div class="mr-3 w-5 flex justify-center"><lucide-icon name="server" class="w-4 h-4 transition-transform group-hover:scale-110"></lucide-icon></div>
+        {{ 'dashboard.header.title' | transloco }}
+      </a>
+
+      <a routerLink="/queues" routerLinkActive="bg-primary/10 text-primary font-medium"
+        class="flex items-center px-3 py-2.5 text-sm rounded-lg text-muted-foreground hover:bg-primary/5 hover:text-foreground transition-all group">
+        <div class="mr-3 w-5 flex justify-center"><lucide-icon name="list" class="w-4 h-4 transition-transform group-hover:scale-110"></lucide-icon></div>
         {{ 'layout.sidebar.queues' | transloco }}
+      </a>
+      
+      <a routerLink="/workers" routerLinkActive="bg-primary/10 text-primary font-medium"
+        class="flex items-center px-3 py-2.5 text-sm rounded-lg text-muted-foreground hover:bg-primary/5 hover:text-foreground transition-all group">
+        <div class="mr-3 w-5 flex justify-center"><lucide-icon name="settings" class="w-4 h-4 transition-transform group-hover:scale-110"></lucide-icon></div>
+        {{ 'layout.sidebar.workers' | transloco }}
+      </a>
+      
+      <a routerLink="/instances" routerLinkActive="bg-primary/10 text-primary font-medium"
+        class="flex items-center px-3 py-2.5 text-sm rounded-lg text-muted-foreground hover:bg-primary/5 hover:text-foreground transition-all group">
+        <div class="mr-3 w-5 flex justify-center"><lucide-icon name="database" class="w-4 h-4 transition-transform group-hover:scale-110"></lucide-icon></div>
+        {{ 'layout.sidebar.instances' | transloco }}
       </a>
     </nav>
 

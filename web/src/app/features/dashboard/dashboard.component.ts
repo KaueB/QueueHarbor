@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { LucideAngularModule } from 'lucide-angular';
 import { StatCardComponent } from '../../core/components/stat-card/stat-card.component';
+import { QueueService } from '../../core/services/queue.service';
 import { QueueInfo, QueueTableComponent } from './components/queue-table/queue-table.component';
 
 @Component({
@@ -11,12 +12,22 @@ import { QueueInfo, QueueTableComponent } from './components/queue-table/queue-t
   templateUrl: './dashboard.component.html',
 })
 export class DashboardComponent {
-  mockQueues: QueueInfo[] = [
-    { name: 'email-notifications', status: 'active', activeJobs: 12, completedJobs: 1450, failedJobs: 5, delayedJobs: 2 },
-    { name: 'image-processing', status: 'active', activeJobs: 4, completedJobs: 820, failedJobs: 12, delayedJobs: 0 },
-    { name: 'report-generator', status: 'paused', activeJobs: 0, completedJobs: 310, failedJobs: 1, delayedJobs: 5 },
-    { name: 'data-backup', status: 'waiting', activeJobs: 0, completedJobs: 45, failedJobs: 0, delayedJobs: 0 },
-  ];
+  private queueService = inject(QueueService);
+
+  mockQueues = signal<QueueInfo[]>([]);
+  stats = signal<any>({
+    totalJobs: '0',
+    activeNow: '0',
+    completed24h: '0',
+    errorSystems: '0'
+  });
+
+  constructor() {
+    this.loadData();
+  }
+
+  loadData() {
+    this.queueService.getMetrics().subscribe(data => this.mockQueues.set(data));
+    this.queueService.getStats().subscribe(data => this.stats.set(data));
+  }
 }
-
-

@@ -18,6 +18,23 @@ export const routes: Routes = [
           import('./features/dashboard/dashboard.component').then((m) => m.DashboardComponent),
       },
       {
+        path: 'instances',
+        loadComponent: () =>
+          import('./features/redis-instances/redis-instances.component').then(
+            (m) => m.RedisInstancesComponent,
+          ),
+      },
+      {
+        path: 'queues',
+        redirectTo: 'dashboard',
+        pathMatch: 'full',
+      },
+      {
+        path: 'workers',
+        redirectTo: 'dashboard',
+        pathMatch: 'full',
+      },
+      {
         path: '',
         redirectTo: 'dashboard',
         pathMatch: 'full',

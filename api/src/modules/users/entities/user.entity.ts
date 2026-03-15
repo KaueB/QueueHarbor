@@ -15,15 +15,18 @@ export class User {
   @Column('varchar', { unique: true })
   email: string;
 
-  @Column()
+  @Column({ name: 'password_hash' })
   passwordHash: string;
 
   @Column({ type: 'enum', enum: UserRole, default: UserRole.USER })
   role: UserRole;
 
-  @CreateDateColumn()
+  @Column({ name: 'token_version', type: 'int', default: 1 })
+  tokenVersion: number;
+
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 }

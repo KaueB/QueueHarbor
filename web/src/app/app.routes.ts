@@ -1,25 +1,32 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
+import { MainLayoutComponent } from './core/layout/main-layout/main-layout.component';
 import { LoginComponent } from './features/auth/login/login.component';
 
 export const routes: Routes = [
-  {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full',
-  },
   {
     path: 'login',
     component: LoginComponent,
   },
   {
-    path: 'dashboard',
+    path: '',
+    component: MainLayoutComponent,
     canActivate: [authGuard],
-    loadComponent: () =>
-      import('./features/dashboard/dashboard.component').then((m) => m.DashboardComponent),
+    children: [
+      {
+        path: 'dashboard',
+        loadComponent: () =>
+          import('./features/dashboard/dashboard.component').then((m) => m.DashboardComponent),
+      },
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full',
+      },
+    ],
   },
   {
-    path: '**', // Rota de 404 ou redirecionamento
+    path: '**',
     redirectTo: 'login',
   },
 ];

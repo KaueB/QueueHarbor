@@ -1,0 +1,21 @@
+ M api/src/modules/auth/auth.controller.ts
+ M api/src/modules/auth/auth.module.ts
+ M api/src/modules/auth/auth.service.ts
+ M api/src/modules/users/entities/user.entity.ts
+ M api/src/modules/users/users.service.ts
+ M web/src/app/app.routes.ts
+ M web/src/app/core/auth/auth.interceptor.ts
+ M web/src/app/core/auth/auth.service.ts
+ D web/src/app/features/auth/auth.routes.ts
+ M web/src/app/features/auth/login/login.component.html
+ M web/src/app/features/dashboard/dashboard.component.ts
+ M web/src/styles.css
+ M web/tailwind.config.js
+?? README.md
+?? api/src/modules/auth/guards/
+?? api/src/modules/auth/jwt.strategy.ts
+?? git_log.txt
+?? git_status.txt
+?? web/src/app/core/layout/
+?? web/src/app/core/theme/
+?? web/src/app/features/dashboard/dashboard.component.html

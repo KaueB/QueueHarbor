@@ -2,15 +2,93 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Ajustes finos para o PrimeNG ficar com cara de Shadcn */
-:root {
-  --primary-color: #0f172a; /* Slate 900 do Tailwind */
-  --surface-border: #e2e8f0;
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+    --radius: 0.5rem;
+  }
+
+  /* Shadcn-like Dark Mode (Zinc/Slate) */
+  .dark {
+    --background: 224 71% 4%; /* Slate-950 roughly */
+    --foreground: 213 31% 91%;
+    --card: 222 47% 11%;    /* Slate-900 roughly */
+    --card-foreground: 213 31% 91%;
+    --muted: 223 47% 11%;
+    --muted-foreground: 215.4 16.3% 56.9%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --border: 216 34% 17%;  /* Slate-800 roughly */
+    --input: 216 34% 17%;
+    --ring: 216 34% 17%;
+  }
 }
-.p-inputtext,
+
+@layer base {
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Forçando o PrimeNG a usar o design system do Shadcn */
+/* Estilo Base para Inputs (Text e Password) */
+.p-inputtext {
+  @apply flex h-10 w-full rounded-md border border-input px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 !important;
+  /* Força a cor do texto e do fundo a respeitar o tema com profundidade (mais escuro que o card) */
+  background-color: theme('colors.slate.950') !important;
+  color: hsl(var(--foreground)) !important;
+}
+
+.dark .p-inputtext {
+  background-color: #020617 !important; /* Slate-950 literal p/ garantir */
+  border-color: hsl(var(--border)) !important;
+}
+
+/* Wrapper do Password para ocupar 100% da largura */
+.p-password,
+.p-password > div {
+  @apply relative flex w-full !important;
+}
+
+/* O input real dentro do Password */
 .p-password input {
-  @apply w-full rounded-md border border-slate-200 px-3 py-2 text-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:ring-offset-2;
+  @apply w-full pr-10 !important;
 }
+
+/* O ícone do olho do PrimeNG */
+.p-password svg.p-icon,
+.p-password i {
+  @apply absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground cursor-pointer transition-colors hover:text-foreground z-10 w-4 h-4 !important;
+}
+
+/* Botão Principal */
 .p-button {
-  @apply w-full justify-center rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:ring-offset-2 transition-colors;
+  @apply inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 shadow h-9 px-4 py-2 w-full !important;
+  background-color: hsl(var(--primary)) !important;
+  color: hsl(var(--primary-foreground)) !important;
+  border: none !important;
+}
+
+.p-button:hover {
+  background-color: hsl(var(--primary) / 0.9) !important;
+}
+
+/* Remove fundo azul/amarelo de autofill do navegador que quebra o dark mode */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px hsl(var(--background)) inset !important;
+    -webkit-text-fill-color: hsl(var(--foreground)) !important;
+    transition: background-color 5000s ease-in-out 0s;
 }

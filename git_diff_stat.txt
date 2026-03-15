@@ -1,0 +1,14 @@
+ api/src/modules/auth/auth.controller.ts            |  15 ++-
+ api/src/modules/auth/auth.module.ts                |  14 ++-
+ api/src/modules/auth/auth.service.ts               |  32 +++++-
+ api/src/modules/users/entities/user.entity.ts      |   9 +-
+ api/src/modules/users/users.service.ts             |   4 +
+ web/src/app/app.routes.ts                          |  25 +++--
+ web/src/app/core/auth/auth.interceptor.ts          |  36 +++++--
+ web/src/app/core/auth/auth.service.ts              |  98 ++++++++++++++++--
+ web/src/app/features/auth/auth.routes.ts           |   0
+ .../app/features/auth/login/login.component.html   | 110 +++++++++++++--------
+ .../app/features/dashboard/dashboard.component.ts  |  14 +--
+ web/src/styles.css                                 |  92 +++++++++++++++--
+ web/tailwind.config.js                             |  34 ++++++-
+ 13 files changed, 384 insertions(+), 99 deletions(-)

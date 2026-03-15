@@ -1,71 +1,97 @@
-<div class="min-h-screen flex items-center justify-center bg-background px-4">
+<div class="min-h-screen flex items-center justify-center bg-background/95 relative overflow-hidden px-4 font-sans">
   
-  <div class="w-full max-w-sm rounded-xl border border-border bg-card text-card-foreground shadow-lg px-6 py-8">
-    
-    <div class="flex flex-col space-y-2 text-center mb-8">
-      <h3 class="font-semibold tracking-tight text-2xl text-foreground">Login na sua conta</h3>
-      <p class="text-sm text-muted-foreground">
-        Insira seu e-mail abaixo para acessar o painel
-      </p>
-    </div>
+  <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] -z-10 pointer-events-none"></div>
+  <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-primary/5 rounded-full blur-[140px] -z-10 pointer-events-none"></div>
 
-    <div class="space-y-6">
-      <form class="grid gap-4" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <div class="w-full max-w-[420px] z-10 relative">
+    
+    <div class="bg-card/60 backdrop-blur-2xl border border-white/5 dark:border-white/10 shadow-2xl rounded-3xl overflow-hidden p-8">
+      
+      <div class="text-center mb-10">
+        <div class="mx-auto w-14 h-14 bg-gradient-to-tr from-primary/20 to-primary/5 rounded-2xl flex items-center justify-center mb-6 text-primary border border-primary/20 shadow-inner">
+          <lucide-icon name="box" class="w-7 h-7"></lucide-icon>
+        </div>
+        <h3 class="font-bold tracking-tight text-3xl text-foreground mb-2">
+          QueueHarbor
+        </h3>
+        <p class="text-sm font-medium text-muted-foreground/80">
+          {{ 'auth.login.subtitle' | transloco }}
+        </p>
+      </div>
+
+      <form class="space-y-6" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         
-        <div class="grid gap-2">
-          <label for="email" class="text-sm font-medium leading-none text-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-            Email
+        <div class="space-y-2">
+          <label for="email" class="text-[13px] font-semibold tracking-wide text-foreground/80 uppercase ml-1">
+            {{ 'auth.login.email_label' | transloco }}
           </label>
-          <input
-            id="email"
-            type="email"
-            pInputText
-            placeholder="m@example.com"
-            formControlName="email"
-            required
-            class="h-10 border-border bg-background"
-          />
+          <div class="relative group">
+            <lucide-icon name="mail" class="absolute left-2 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/60 group-focus-within:text-primary transition-colors z-10 pointer-events-none"></lucide-icon>
+            <input
+              id="email"
+              type="email"
+              [placeholder]="'auth.login.email_placeholder' | transloco"
+              formControlName="email"
+              class="flex h-12 w-full rounded-2xl border border-input/50 bg-background/40 hover:bg-background/80 focus:bg-background text-foreground pl-12 pr-4 py-2 text-[15px] ring-offset-background placeholder:text-muted-foreground/50 outline-none focus:border-primary focus:ring-4 focus:ring-primary/15 transition-all duration-300 shadow-sm caret-primary"
+              autocomplete="email"
+            />
+          </div>
         </div>
 
-        <div class="grid gap-2">
-          <div class="flex items-center">
-            <label for="password" class="text-sm font-medium leading-none text-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-              Senha
+        <div class="space-y-2">
+          <div class="flex items-center justify-between ml-1">
+            <label for="password" class="text-[13px] font-semibold tracking-wide text-foreground/80 uppercase">
+              {{ 'auth.login.password_label' | transloco }}
             </label>
-            <a href="#" class="ml-auto inline-block text-xs underline-offset-4 hover:underline text-muted-foreground hover:text-foreground">
-              Esqueceu sua senha?
+            <a href="#" class="text-xs font-semibold text-primary hover:text-primary/80 transition-colors">
+              {{ 'auth.login.forgot_password' | transloco }}
             </a>
           </div>
-          <p-password
-            id="password"
-            [toggleMask]="true"
-            [feedback]="false"
-            styleClass="w-full"
-            formControlName="password"
-          ></p-password>
+          
+          <div class="relative group">
+            <lucide-icon name="lock" class="absolute left-2 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/60 group-focus-within:text-primary transition-colors z-10 pointer-events-none"></lucide-icon>
+            <input
+              id="password"
+              [type]="showPassword() ? 'text' : 'password'"
+              placeholder="••••••••"
+              formControlName="password"
+              autocomplete="current-password"
+              class="flex h-12 w-full rounded-2xl border border-input/50 bg-background/40 hover:bg-background/80 focus:bg-background text-foreground pl-12 pr-12 py-2 text-[15px] ring-offset-background placeholder:text-muted-foreground/40 outline-none focus:border-primary focus:ring-4 focus:ring-primary/15 transition-all duration-300 shadow-sm tracking-widest caret-primary"
+              [class.tracking-normal]="showPassword()"
+            />
+            <button 
+              type="button" 
+              (click)="togglePassword()"
+              class="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-muted-foreground/60 hover:text-foreground transition-colors focus:outline-none rounded-lg focus-visible:ring-2 focus-visible:ring-primary"
+            >
+              <lucide-icon [name]="showPassword() ? 'eye-off' : 'eye'" class="w-4 h-4"></lucide-icon>
+            </button>
+          </div>
         </div>
 
-        <p-button
-          label="Login"
-          [disabled]="loginForm.invalid || isLoading"
-          type="submit"
-          styleClass="w-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors h-10 font-semibold"
-        ></p-button>
-
-        <button type="button" class="inline-flex h-10 items-center justify-center whitespace-nowrap rounded-md border border-input bg-transparent px-4 py-2 text-sm font-medium shadow-sm transition-colors hover:bg-muted hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 w-full">
-          Login with Google
-        </button>
+        <div class="pt-4">
+          <button
+            type="submit"
+            [disabled]="loginForm.invalid || isLoading"
+            class="group relative inline-flex items-center justify-center whitespace-nowrap rounded-2xl text-[15px] font-bold ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/95 hover:scale-[1.02] active:scale-[0.98] h-12 w-full overflow-hidden shadow-lg shadow-primary/20"
+          >
+            <!-- Hover Shine Effect -->
+            <div class="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:animate-shimmer"></div>
+            
+            <span class="flex items-center gap-2 relative z-10" *ngIf="!isLoading">
+              {{ 'auth.login.button_enter' | transloco }}
+              <lucide-icon name="log-in" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></lucide-icon>
+            </span>
+            <lucide-icon *ngIf="isLoading" name="loader-2" class="w-5 h-5 animate-spin relative z-10"></lucide-icon>
+          </button>
+        </div>
       </form>
 
-      @if (errorMessage) {
-        <p class="mt-4 text-sm text-red-500 font-medium text-center">
-          {{ errorMessage }}
-        </p>
-      }
-
-      <div class="mt-4 text-center text-sm text-muted-foreground">
-        Não tem uma conta? <a href="#" class="underline underline-offset-4 text-foreground font-medium">Cadastre-se</a>
+      <div *ngIf="errorMessage" class="mt-8 flex items-center gap-3 rounded-2xl bg-destructive/10 p-4 text-[14px] font-medium text-destructive animate-in fade-in slide-in-from-top-2 duration-300 border border-destructive/20 shadow-sm">
+        <lucide-icon name="alert-circle" class="w-5 h-5 shrink-0"></lucide-icon>
+        <p>{{ errorMessage }}</p>
       </div>
+
     </div>
   </div>
 </div>

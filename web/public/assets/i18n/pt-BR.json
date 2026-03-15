@@ -1,0 +1,50 @@
+{
+  "auth": {
+    "login": {
+      "title": "QueueHarbor",
+      "subtitle": "Bora gerenciar essas filas hoje?",
+      "email_label": "Email",
+      "password_label": "Senha",
+      "email_placeholder": "nome@empresa.com",
+      "forgot_password": "Esqueceu a senha?",
+      "button_enter": "Entrar",
+      "error_invalid": "E-mail ou senha incorretos."
+    }
+  },
+  "layout": {
+    "sidebar": {
+      "queues": "Filas BullMQ",
+      "logout": "Sair"
+    },
+    "settings": {
+      "theme": "Tema",
+      "language": "Idioma"
+    },
+    "theme_modal": {
+      "title": "Aparência",
+      "description": "Escolha o tema da interface do QueueHarbor.",
+      "light": "Claro",
+      "dark": "Escuro",
+      "system": "Sistema"
+    },
+    "lang_modal": {
+      "title": "Idioma",
+      "description": "Selecione o idioma de preferência."
+    }
+  },
+  "dashboard": {
+    "header": {
+      "title": "Dashboard",
+      "subtitle": "Veja o que está acontecendo nas suas filas agora."
+    },
+    "cards": {
+      "active_queues": "Filas Ativas",
+      "processed_jobs": "Jobs Processados (24h)",
+      "connected_workers": "Workers Conectados"
+    },
+    "empty_state": {
+      "title": "Nenhuma atividade recente",
+      "description": "Conecte um worker ou adicione jobs para começar a ver métricas."
+    }
+  }
+}

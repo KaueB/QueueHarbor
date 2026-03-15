@@ -1,69 +1,68 @@
 <div class="flex h-screen bg-background w-full font-sans text-foreground transition-colors duration-300">
   
-  <aside class="w-64 border-r border-border bg-card hidden md:flex flex-col">
-    <div class="h-16 flex items-center px-6 border-b border-border">
-      <i class="pi pi-box mr-3 text-xl"></i>
-      <h2 class="text-lg font-bold tracking-tight">QueueHarbor</h2>
+  <aside class="w-64 border-r border-border bg-card hidden md:flex flex-col z-10 shadow-[4px_0_24px_-12px_rgba(0,0,0,0.1)]">
+    <div class="h-16 flex items-center px-6 border-b border-border/50 shrink-0">
+      <div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center mr-3 text-primary shadow-sm border border-primary/20">
+        <lucide-icon name="box" class="w-5 h-5"></lucide-icon>
+      </div>
+      <h2 class="text-xl font-bold tracking-tight bg-gradient-to-br from-foreground to-muted-foreground bg-clip-text text-transparent">QueueHarbor</h2>
     </div>
 
-    <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
-      <a 
-        routerLink="/dashboard" 
-        routerLinkActive="bg-muted font-medium"
-        [routerLinkActiveOptions]="{exact: true}"
-        class="flex items-center px-3 py-2.5 text-sm rounded-md text-muted-foreground hover:bg-muted hover:text-foreground transition-colors">
-        <i class="pi pi-server mr-3"></i> 
-        Filas BullMQ
+    <nav class="flex-1 p-4 space-y-1.5 overflow-y-auto mt-2">
+      <a routerLink="/dashboard" routerLinkActive="bg-primary/10 text-primary font-medium" [routerLinkActiveOptions]="{exact: true}"
+        class="flex items-center px-3 py-2.5 text-sm rounded-lg text-muted-foreground hover:bg-primary/5 hover:text-foreground transition-all group">
+        <div class="mr-3 w-5 flex justify-center"><lucide-icon name="server" class="w-4 h-4 transition-transform group-hover:scale-110"></lucide-icon></div>
+        {{ 'layout.sidebar.queues' | transloco }}
       </a>
     </nav>
 
-    <div class="p-4 border-t border-border">
-      <button 
-        (click)="onLogout()" 
-        class="flex w-full items-center px-3 py-2 text-sm font-medium rounded-md text-muted-foreground hover:bg-red-500/10 hover:text-red-500 transition-colors">
-        <i class="pi pi-sign-out mr-3"></i> 
-        Sair
-      </button>
+    <div class="p-4 border-t border-border/50 mt-auto bg-muted/10">
+      <app-user-menu 
+        [userInitial]="userInitial()"
+        [userName]="userName()"
+        [email]="user()?.email || ''"
+        (openTheme)="openThemeDialog()"
+        (openLanguage)="openLangDialog()"
+        (logout)="onLogout()">
+      </app-user-menu>
     </div>
   </aside>
 
-  <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
-    
-    <header class="h-16 border-b border-border bg-card flex items-center justify-between px-6 lg:px-8">
-      
-      <div class="md:hidden flex items-center font-bold tracking-tight">
-        <i class="pi pi-box mr-2"></i> QueueHarbor
-      </div>
-
-      <div class="hidden md:block flex-1"></div>
-
-      <div class="flex items-center space-x-4">
-        
-        <button 
-          (click)="themeService.toggleTheme()" 
-          class="inline-flex items-center justify-center h-9 w-9 rounded-md transition-colors hover:bg-muted text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring">
-          <i class="pi text-lg" [class.pi-moon]="!themeService.isDarkMode()" [class.pi-sun]="themeService.isDarkMode()"></i>
-        </button>
-
-        @if (user()) {
-          <div class="flex items-center space-x-3 border-l border-border pl-4">
-            <div class="flex flex-col text-right hidden sm:flex">
-              <span class="text-sm font-medium leading-none">{{ user()?.email }}</span>
-              <span class="text-xs text-muted-foreground mt-1">{{ user()?.role }}</span>
-            </div>
-            <div class="h-9 w-9 rounded-full bg-primary flex items-center justify-center text-primary-foreground text-sm font-medium select-none">
-              {{ userInitial() }}
-            </div>
-          </div>
-        }
-      </div>
-    </header>
-
-    <main class="flex-1 overflow-auto bg-muted/30 p-6 lg:p-8">
+  <div class="flex-1 flex flex-col min-w-0 overflow-hidden bg-muted/10">
+    <main class="flex-1 overflow-auto p-6 lg:p-10 transition-all duration-500">
       <div class="mx-auto max-w-7xl">
         <router-outlet></router-outlet>
       </div>
     </main>
-
   </div>
 </div>
+
+<app-sheet [(isOpen)]="isThemeDialogOpen" [title]="'layout.theme_modal.title' | transloco" [description]="'layout.theme_modal.description' | transloco">
+  <div class="flex flex-col gap-2 mt-2">
+    <button (click)="changeTheme('light')" class="flex items-center justify-between px-3 py-3 rounded-md border border-border hover:bg-muted transition-colors" [ngClass]="{'border-primary bg-muted/50': themeService.theme() === 'light'}">
+      <div class="flex items-center gap-3"><lucide-icon name="sun" class="w-4 h-4"></lucide-icon> {{ 'layout.theme_modal.light' | transloco }}</div>
+      @if(themeService.theme() === 'light'){ <lucide-icon name="check" class="w-4 h-4 text-primary"></lucide-icon> }
+    </button>
+    <button (click)="changeTheme('dark')" class="flex items-center justify-between px-3 py-3 rounded-md border border-border hover:bg-muted transition-colors" [ngClass]="{'border-primary bg-muted/50': themeService.theme() === 'dark'}">
+      <div class="flex items-center gap-3"><lucide-icon name="moon" class="w-4 h-4"></lucide-icon> {{ 'layout.theme_modal.dark' | transloco }}</div>
+      @if(themeService.theme() === 'dark'){ <lucide-icon name="check" class="w-4 h-4 text-primary"></lucide-icon> }
+    </button>
+    <button (click)="changeTheme('system')" class="flex items-center justify-between px-3 py-3 rounded-md border border-border hover:bg-muted transition-colors" [ngClass]="{'border-primary bg-muted/50': themeService.theme() === 'system'}">
+      <div class="flex items-center gap-3"><lucide-icon name="monitor" class="w-4 h-4"></lucide-icon> {{ 'layout.theme_modal.system' | transloco }}</div>
+      @if(themeService.theme() === 'system'){ <lucide-icon name="check" class="w-4 h-4 text-primary"></lucide-icon> }
+    </button>
+  </div>
+</app-sheet>
+
+<app-sheet [(isOpen)]="isLangDialogOpen" [title]="'layout.lang_modal.title' | transloco" [description]="'layout.lang_modal.description' | transloco">
+  <div class="flex flex-col gap-2 mt-2">
+    <button (click)="changeLang('pt-BR')" class="flex items-center justify-between px-3 py-3 rounded-md border border-border hover:bg-muted transition-colors" [ngClass]="{'border-primary bg-muted/50': currentLang() === 'pt-BR'}">
+      <div class="flex items-center">Português (Brasil)</div>
+      @if(currentLang() === 'pt-BR'){ <lucide-icon name="check" class="w-4 h-4 text-primary"></lucide-icon> }
+    </button>
+    <button (click)="changeLang('en')" class="flex items-center justify-between px-3 py-3 rounded-md border border-border hover:bg-muted transition-colors" [ngClass]="{'border-primary bg-muted/50': currentLang() === 'en'}">
+      <div class="flex items-center">English</div>
+      @if(currentLang() === 'en'){ <lucide-icon name="check" class="w-4 h-4 text-primary"></lucide-icon> }
+    </button>
+  </div>
+</app-sheet>

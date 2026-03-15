@@ -1,32 +1,52 @@
 import { effect, Injectable, signal } from '@angular/core';
 
+export type ThemeMode = 'light' | 'dark' | 'system';
+
+const VALID_THEMES: ThemeMode[] = ['light', 'dark', 'system'];
+
 @Injectable({
   providedIn: 'root'
 })
 export class ThemeService {
-  isDarkMode = signal<boolean>(false);
+  theme = signal<ThemeMode>('system');
+  isDarkActive = signal<boolean>(false);
 
   constructor() {
-    const storedTheme = localStorage.getItem('queueharbor-theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-    if (storedTheme === 'dark' || (!storedTheme && prefersDark)) {
-      this.isDarkMode.set(true);
+    const storedTheme = localStorage.getItem('queueharbor-theme') as ThemeMode;
+    if (storedTheme) {
+      if (VALID_THEMES.includes(storedTheme)) {
+        this.theme.set(storedTheme);
+      }
     }
 
-    // O effect roda automaticamente sempre que o isDarkMode() mudar
     effect(() => {
-      if (this.isDarkMode()) {
-        document.documentElement.classList.add('dark');
-        localStorage.setItem('queueharbor-theme', 'dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-        localStorage.setItem('queueharbor-theme', 'light');
+      const currentTheme = this.theme();
+      localStorage.setItem('queueharbor-theme', currentTheme);
+      this.applyTheme(currentTheme);
+    });
+
+    // Escuta mudanças no sistema operacional em tempo real
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+      if (this.theme() === 'system') {
+        this.applyTheme('system');
       }
     });
   }
 
-  toggleTheme() {
-    this.isDarkMode.update(current => !current);
+  setTheme(newTheme: ThemeMode) {
+    this.theme.set(newTheme);
+  }
+
+  private applyTheme(themeMode: ThemeMode) {
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const shouldBeDark = themeMode === 'dark' || (themeMode === 'system' && prefersDark);
+    
+    this.isDarkActive.set(shouldBeDark);
+
+    if (shouldBeDark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
   }
 }

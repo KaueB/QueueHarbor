@@ -1,0 +1,50 @@
+{
+  "auth": {
+    "login": {
+      "title": "QueueHarbor",
+      "subtitle": "Let's manage those queues today?",
+      "email_label": "Email",
+      "password_label": "Password",
+      "email_placeholder": "name@company.com",
+      "forgot_password": "Forgot your password?",
+      "button_enter": "Log in",
+      "error_invalid": "Invalid email or password."
+    }
+  },
+  "layout": {
+    "sidebar": {
+      "queues": "BullMQ Queues",
+      "logout": "Log out"
+    },
+    "settings": {
+      "theme": "Theme",
+      "language": "Language"
+    },
+    "theme_modal": {
+      "title": "Appearance",
+      "description": "Choose the QueueHarbor interface theme.",
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    },
+    "lang_modal": {
+      "title": "Language",
+      "description": "Select your preferred language."
+    }
+  },
+  "dashboard": {
+    "header": {
+      "title": "Dashboard",
+      "subtitle": "See what's happening in your queues right now."
+    },
+    "cards": {
+      "active_queues": "Active Queues",
+      "processed_jobs": "Processed Jobs (24h)",
+      "connected_workers": "Connected Workers"
+    },
+    "empty_state": {
+      "title": "No recent activity",
+      "description": "Connect a worker or add jobs to start seeing metrics."
+    }
+  }
+}

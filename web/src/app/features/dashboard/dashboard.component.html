@@ -1,35 +1,73 @@
-<div class="space-y-6">
-  <header>
-    <h1 class="text-2xl font-semibold tracking-tight text-slate-900">
-      Dashboard
-    </h1>
-    <p class="text-sm text-slate-500">
-      Veja o que está acontecendo nas suas filas agora.
-    </p>
-  </header>
-  
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-    <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
-      <span class="text-sm font-medium text-slate-500">Filas Ativas</span>
-      <p class="text-3xl font-bold text-slate-900 mt-2">0</p>
+<div class="space-y-8 pb-8">
+  <div class="flex items-center justify-between mb-8">
+    <div>
+      <h1 class="text-3xl font-bold tracking-tight text-foreground">Dashboard</h1>
+      <p class="text-muted-foreground mt-1">Bem-vindo de volta! Aqui está o resumo das suas filas.</p>
     </div>
-    <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
-      <span class="text-sm font-medium text-slate-500">Jobs Processados (24h)</span>
-      <p class="text-3xl font-bold text-slate-900 mt-2">0</p>
-    </div>
-    <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
-      <span class="text-sm font-medium text-slate-500">Workers Conectados</span>
-      <p class="text-3xl font-bold text-slate-900 mt-2">0</p>
+    <div class="flex items-center gap-3">
+      <button class="inline-flex items-center justify-center rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm hover:bg-primary/90 transition-all hover:scale-[1.02] active:scale-[0.98] gap-2">
+        <lucide-icon name="server" class="w-4 h-4"></lucide-icon>
+        Nova Fila
+      </button>
     </div>
   </div>
 
-  <div class="bg-white border border-slate-200 rounded-xl p-8 text-center">
-    <div class="mx-auto w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center mb-4">
-      <i class="pi pi-inbox text-slate-400 text-xl"></i>
+  <!-- Stats Grid -->
+  <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-10">
+    <app-stat-card
+      title="Total de Jobs"
+      value="2,450"
+      icon="box"
+      description="+12% desde ontem"
+    ></app-stat-card>
+    <app-stat-card
+      title="Ativos agora"
+      value="16"
+      icon="server"
+      description="Processamento normal"
+    ></app-stat-card>
+    <app-stat-card
+      title="Concluídos (24h)"
+      value="1,280"
+      icon="check-circle"
+      description="Taxa de sucesso: 98%"
+    ></app-stat-card>
+    <app-stat-card
+      title="Sistemas em Erro"
+      value="2"
+      icon="alert-circle"
+      description="Requer atenção imediata"
+    ></app-stat-card>
+  </div>
+
+  <!-- Queue Table with @defer -->
+  <div class="space-y-4">
+    <div class="flex items-center justify-between">
+      <h2 class="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
+        <lucide-icon name="inbox" class="w-5 h-5 text-primary"></lucide-icon>
+        Gerenciamento de Filas
+      </h2>
     </div>
-    <h3 class="text-slate-900 font-semibold mb-1">Nenhuma atividade recente</h3>
-    <p class="text-sm text-slate-500">
-      Conecte um worker ou adicione jobs para começar a ver métricas.
-    </p>
+
+    @defer (on idle) {
+      <app-queue-table [queues]="mockQueues"></app-queue-table>
+    } 
+    @placeholder (minimum 800ms) {
+      <div class="w-full bg-card border border-border rounded-2xl overflow-hidden p-8 animate-pulse">
+        <div class="h-8 w-1/4 bg-muted rounded-md mb-6"></div>
+        <div class="space-y-4">
+          <div class="h-12 w-full bg-muted/50 rounded-xl"></div>
+          <div class="h-12 w-full bg-muted/50 rounded-xl"></div>
+          <div class="h-12 w-full bg-muted/50 rounded-xl"></div>
+          <div class="h-12 w-full bg-muted/50 rounded-xl"></div>
+        </div>
+      </div>
+    }
+    @loading {
+      <div class="flex flex-col items-center justify-center p-12 bg-card border border-border rounded-2xl border-dashed">
+         <lucide-icon name="loader-2" class="w-8 h-8 animate-spin text-primary mb-4"></lucide-icon>
+         <p class="text-sm font-medium text-muted-foreground">Carregando filas...</p>
+      </div>
+    }
   </div>
 </div>

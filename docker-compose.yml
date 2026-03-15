@@ -5,10 +5,12 @@ services:
     image: postgres:16-alpine
     container_name: quere-harbor-postgres
     restart: always
+    env_file:
+      - ./api/.env
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: adminpassword
-      POSTGRES_DB: quere-harbor-db
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     ports:
       - "5432:5432"
     volumes:
